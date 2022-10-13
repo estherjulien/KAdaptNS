@@ -19,18 +19,20 @@ def train_model(N, K, train_sp=False, ct=0.05, minutes=5, nodes=2, balanced=True
         att_series = ["coords", "obj_det", "y_det", "slack", "const_to_z_dist",
                       "const_to_const_dist"]
         save_name = "sp_sphere"
+        data_map = "ShortestPath/Data/Results/TrainData"
         save_map = "ShortestPath/Data/Models"
     else:
         att_series = ["coords", "obj_stat", "y_stat", "obj_det", "x_det", "y_det", "slack", "const_to_z_dist",
                       "const_to_const_dist"]
         save_name = "cb"
+        data_map = "ShortestPath/Data/Results/TrainData"
         save_map = "CapitalBudgeting/Data/Models"
 
     # define features
     features = ["theta_node", "theta_pre", "zeta_node", "zeta_pre", "depth", *att_series]
 
     # GET TRAINING DATA
-    with open(f"../CBData/train_data_cb_N10_K{K}_min{minutes}_nodes{nodes}.pickle", "rb") as handle:
+    with open(f"../{data_map}/train_data_cb_N10_K{K}_min{minutes}_nodes{nodes}.pickle", "rb") as handle:
         res = pickle.load(handle)
     X = res["X"]
     Y = res["Y"]

@@ -1,4 +1,4 @@
-from ProblemFunctions.att_functions_high import *
+from ProblemFunctions.att_functions import *
 
 from joblib import Parallel, delayed
 from datetime import datetime
@@ -12,21 +12,6 @@ import time
 
 
 def data_gen_fun_max(K, env, att_series=None, problem_type="test", time_limit=5*60, perc_label=0.05, normalized=False):
-    # STORE NEW NEXT SCENARIO IN EMPTY NODE, THAT'S NEW BEGINNING!
-    #   - attributes need to be stored for this
-    # INITIAL RUN ON ALL CORES FOR INITIAL ROBUST SOLUTIONS
-    #   - theta_init, zeta_init are mean of these runs
-    #   - no attribute storing for this, saves time!
-    # CREATE TOTAL UPPER TREE OF DEPTH max_depth
-    #   - store all input data for this
-    #   - not yet labels!
-    # alpha RANDOM RUNS FROM LOWEST K^max_depth NODES
-    #   - store number of better robust results from these alpha runs per node.
-    #   - Then p^suc_i = G/alpha,
-    #       - where i is the index of the node,
-    #       - G is the number of times we have a better robust solution
-    # UPDATE SUCCESS RATES TO UPPER TREE NODES
-    #   - these are the labels of the node data points!
     if att_series is None:
         att_series = ["coords", "obj_stat", "y_stat", "obj_det", "x_det", "y_det", "slack", "const_to_z_dist",
                       "const_to_const_dist"]

@@ -1,7 +1,6 @@
-from ProblemFunctions.att_functions_high import *
+from ProblemFunctions.att_functions import *
 from ProblemFunctions.functions_milp import *
 
-from tensorflow.keras.models import load_model
 from datetime import datetime
 import numpy as np
 import joblib
@@ -61,12 +60,7 @@ def algorithm(K, env, att_series=None, max_level=5, success_model_name=None, tim
 
     if success_model_name is None:
         success_model_name = f"./Data/Models/nn_regr_cb_N10_K2_test_all_norm_D5_W100.h5"
-    if "nn_" in success_model_name:
-        nn_used = True
-        success_model = load_model(success_model_name)
-    else:
-        nn_used = False
-        success_model = joblib.load(success_model_name)
+    success_model = joblib.load(success_model_name)
 
     att_index = att_index_maker(env, att_series)
 
@@ -165,7 +159,7 @@ def algorithm(K, env, att_series=None, max_level=5, success_model_name=None, tim
                 k_att_sel = {k: np.array([att_all_k[p][k] for p in placement[k]]) for k in np.arange(K)}
                 tau_att = {k: np.hstack([att_all[placement[k]], k_att_sel[k]]) for k in np.arange(K)}
                 tau_s = state_features(theta, zeta, tot_scens, tot_scens_init, theta_init, zeta_init, theta_pre, zeta_pre)
-                K_set, predictions = predict_subset(K, tau_att, scen_att, scen_att_k, success_model, att_index, tau_s, nn_used)
+                K_set, predictions = predict_subset(K, tau_att, scen_att, scen_att_k, success_model, att_index, tau_s)
                 if thresh is not None and not from_trash and np.all(predictions < thresh):
                     N_set_trash.append(placement)
                     new_model = True

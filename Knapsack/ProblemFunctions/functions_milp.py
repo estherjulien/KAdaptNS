@@ -11,7 +11,6 @@ def scenario_fun_update(K, k_new, xi_new, env, scen_model):
     # add new constraints
     # objective constraint
     scen_model.addConstr((gp.quicksum(env.cost[i]*(1 - 0.5*xi_new[i])*y[k_new][i] for i in np.arange(env.N))) >= theta)
-    # scen_model.addConstr((gp.quicksum((env.cost[i] - 2 * xi_new[i])*y[k_new][i] for i in np.arange(env.N))) >= theta)
 
     # solve
     scen_model.optimize()
@@ -144,7 +143,6 @@ def scenario_fun_deterministic_update(env, scen, smd):
     # constraints
     # objective constraint
     smd.addConstr(gp.quicksum(env.cost[i] * (1 - 0.5 * scen[i]) * y[i] for i in np.arange(env.N)) >= theta, name="new_const_1")
-    # smd.addConstr(gp.quicksum((env.cost[i] - 2*scen[i]) * y[i] for i in np.arange(env.N)) >= theta, name="new_const_1")
 
     smd.update()
     # solve

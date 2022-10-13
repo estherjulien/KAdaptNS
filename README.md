@@ -49,7 +49,7 @@ instance for generating training data; `hours` is the total  number of hours spe
 
 EXAMPLE: 
 ```bash
-python <problem_type>/run_suc_pred.py 0 10 4 6 10 2 5 40
+python CapitalBudgeting/run_suc_pred.py 0 10 4 6 10 2 5 40
 ```
 
 ### Generate training data
@@ -61,7 +61,7 @@ python <problem_type>/make_data.py <job_num> <N> <K_ML> <time_limit>
 
 EXAMPLE:
 ```bash
-python <problem_type>/make_data.py 1 10 4 5
+python CapitalBudgeting/make_data.py 1 10 4 2
 ```
 
 
