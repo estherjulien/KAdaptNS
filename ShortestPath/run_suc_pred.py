@@ -10,7 +10,9 @@ INPUT:  -- instance parameters
         K = number of second-stage decisions
         -- ML model parameters
         K_ML = value of K used to generate training data
+        minutes = num. minutes spend per instance in generating training data
         hours = number of hours spend on generating training data
+        ct = classification threshold - from which probability score on the quality is considered good.
         -- K-B&B-NodeSelection parameters
         max_level = maximum level up to where ML model is applied for node selection. from then on random
 OUTPUT: solution of K-B&B-NodeSelection
@@ -19,44 +21,17 @@ OUTPUT: solution of K-B&B-NodeSelection
 
 
 if __name__ == "__main__":
+    # INSTANCE PARAMETERS
     i = int(sys.argv[1])
     N = int(sys.argv[2])
     K = int(sys.argv[3])
+    # ML PARAMETERS
     K_ML = int(sys.argv[4])
-    hours = int(sys.argv[5])
-
-    if hours == 0:
-        hours = None
-
-    if len(sys.argv) == 7:
-        max_level = int(sys.argv[6])
-        if max_level == 0:
-            max_level = None
-    else:
-        max_level = None
-
-    ct = 5
-
-    if K_ML == 2:
-        minutes = 15
-        if hours is None:
-            nodes = 10
-    elif K_ML == 3:
-        minutes = 15
-        if hours is None:
-            nodes = 5
-    elif K_ML == 4:
-        minutes = 20
-        if hours is None:
-            nodes = 5
-    elif K_ML == 5:
-        minutes = 20
-        if hours is None:
-            nodes = 10
-    else:
-        minutes = 15
-        if hours is None:
-            nodes = 10
+    minutes = int(sys.argv[5])
+    hours = int(sys.argv[6])
+    ct = int(sys.argv[7])
+    # MODEL PARAMETERS
+    max_level = int(sys.argv[8])
 
     # load environment
     with open(f"ShortestPath/Data/Instances/inst_results/sp_env_sphere_N{N}_{i}.pickle", "rb") as handle:
