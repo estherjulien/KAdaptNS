@@ -1,6 +1,7 @@
-import gurobipy as gp
-from gurobipy import GRB
 from ProblemFunctions.Env import *
+from gurobipy import GRB
+import gurobipy as gp
+import numpy as np
 
 
 """

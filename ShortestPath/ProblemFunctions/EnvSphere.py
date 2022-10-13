@@ -1,7 +1,4 @@
-import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
-import pickle
 import math
 
 """
@@ -116,57 +113,3 @@ class Graph:
             arcs_in[j].append(a)
             arcs_out[i].append(a)
         return arcs_in, arcs_out
-
-    # plot graphs
-    def plot_graph(self, problem_type="", name=None):
-        sns.set()
-        sns.set_style("whitegrid")
-
-        phi = np.linspace(0, np.pi, 20)
-        theta = np.linspace(0, 2 * np.pi, 40)
-        x = np.outer(np.sin(theta), np.cos(phi))
-        y = np.outer(np.sin(theta), np.sin(phi))
-        z = np.outer(np.cos(theta), np.ones_like(phi))
-
-        fig, ax = plt.subplots(1, 1, subplot_kw={'projection': '3d'})
-        ax.plot_wireframe(x, y, z, color='lightgray', rstride=1, cstride=1)
-
-        for i in np.arange(self.N):
-            for j in np.arange(self.N):
-                if self.arcs[i, j] < 1e-5:
-                    continue
-                plt.plot(self.vertices[[i, j], 0], self.vertices[[i, j], 1], self.vertices[[i, j], 2], "k")
-        graph_vertices = [i for i in np.arange(self.N) if i not in [self.s, self.t]]
-        ax.scatter(self.vertices[graph_vertices, 0], self.vertices[graph_vertices, 1], self.vertices[graph_vertices, 2], s=100, c='r')
-        ax.scatter(*self.vertices[self.s], s=200, c="g")
-        ax.scatter(*self.vertices[self.t], s=200, c="b")
-
-        plt.axis("off")
-
-        if name is None:
-            plt.savefig(f"ShortestPathCluster/Data/Plots/graph_{problem_type}_inst{self.inst_num}")
-        else:
-            pickle.dump(fig, open(f'Data/Plots/Interactive/FigureObject_graph_{name}_{problem_type}_{self.inst_num}.fig.pickle', 'wb'))
-            plt.savefig(f"Data/Plots/graph_{name}_{problem_type}_inst{self.inst_num}")
-
-        return plt
-
-    def plot_graph_solutions(self, K, y, tau, x=None, tmp=False, it=0, alg_type="rand"):
-        plt = self.plot_graph()
-
-        # second stage
-        cols = ["blue", "purple", "green", "red", "yellow", "orange", "grey", "cornflowerblue", "hotpink"]
-        for k in np.arange(K):
-            if len(tau[k]) == 0:
-                continue
-            for a in np.arange(self.num_arcs):
-                if y[k][a] > 0.5:
-                    i, j = self.arcs_array[a]
-                    plt.plot(self.vertices[[i, j], 0], self.vertices[[i, j], 1], self.vertices[[i, j], 3], cols[k])
-
-        if tmp:
-            plt.savefig(f"Results/Plots/tmp_graph_{alg_type}_inst{self.inst_num}_it{it}")
-        else:
-            plt.savefig(f"Results/Plots/final_graph_{alg_type}_inst{self.inst_num}")
-            plt.savefig(f"Results/Plots/final_graph_{alg_type}_inst{self.inst_num}.pdf")
-        plt.close()

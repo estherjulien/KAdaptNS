@@ -1,1 +1,1 @@
-Empty directory for saving instances
+Directory for saving instances

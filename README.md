@@ -2,7 +2,7 @@
 > **Machine Learning for K-adaptability in Two-stage Robust Optimization**  
 > *Esther Julien, Krzysztof Postek, S.Ilker Birbil*
 
-To run the code, the following packages have to be installed: `numpy`, `scikit-learn`, `matplotlib`, `seaborn`, 
+To run the code, the following packages have to be installed: `numpy`, `scikit-learn`,
 `gurobipy`, and `joblib`.
 
 ## Make instances
@@ -68,16 +68,16 @@ python <problem_type>/make_data.py 1 10 4 5
 #### Train random forest
 In the folder `MLTraining` you can find the code for training a random forest. 
 
-[comment]: <> (### Preprocessed data)
+### Preprocessed data
 
-[comment]: <> (The `<problem_type>/Data` folder consists of:)
+The `<problem_type>/Data` folder consists of:
 
-[comment]: <> (- `Results`:)
+- `Results`:
 
-[comment]: <> (  - `Results/Decisions/inst_results` has the results of K-B&B and K-B&B-NodeSelection)
+  - `Results/Decisions/inst_results` has the results of K-B&B and K-B&B-NodeSelection
 
-[comment]: <> (  - `Results/TrainData/inst_results` has the results of generating training data)
+  - `Results/TrainData/inst_results` has the results of generating training data
 
-[comment]: <> (- `Instances` for different test instances)
+- `Instances` for some example test instances (of the smallest size)
 
-[comment]: <> (- `RunInfo` on metadata of generating training data)
+- `RunInfo` on metadata of generating training data

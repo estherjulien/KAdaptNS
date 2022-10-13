@@ -1,7 +1,4 @@
-import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
-import copy
 
 
 """
@@ -10,7 +7,7 @@ Code for making a 2-D graph as a shortest path instance
 
 
 class Graph:
-    def __init__(self, N, gamma=7, inst_num=0, degree=5, throw_away_perc=0.9, init_vertices=None, init_distances=None, init_s=None, init_t=None, plot=False):
+    def __init__(self, N, gamma=7, inst_num=0, degree=5, throw_away_perc=0.9, init_vertices=None, init_distances=None, init_s=None, init_t=None):
         self.N = N
         self.degree = degree
         self.throw_away_perc = throw_away_perc
@@ -41,8 +38,6 @@ class Graph:
 
         if gamma is not None:
             self.gamma = gamma
-        if plot:
-            self.plot_graph()
 
     def set_gamma(self, gamma):
         self.gamma = gamma
@@ -117,62 +112,3 @@ class Graph:
             arcs_in[j].append(a)
             arcs_out[i].append(a)
         return arcs_in, arcs_out
-
-    # plot graphs
-    def plot_graph(self):
-        arcs = self.arcs
-        sns.set()
-        sns.set_style("whitegrid")
-        # plot all arcs and vertices
-        for i in np.arange(self.N):
-            for j in np.arange(self.N):
-                if arcs[i, j] < 1e-5:
-                    continue
-                plt.plot(self.vertices[[i, j], 0], self.vertices[[i, j], 1], "darkgrey")
-        plt.plot(self.vertices[:, 0], self.vertices[:, 1], "rx")
-        plt.plot(*self.vertices[self.s], "go")
-        plt.plot(*self.vertices[self.t], "bo")
-        plt.xlim(0, 10)
-        plt.ylim(0, 10)
-        plt.savefig(f"init_graph_N{self.N}_inst{self.inst_num}")
-        plt.close()
-        return plt
-
-    def plot_graph_solutions(self, K, y, tau, x=None, tmp=False, it=0, alg_type="rand"):
-        arcs = self.arcs
-        sns.set()
-        sns.set_style("whitegrid")
-        # plot all arcs and vertices
-        for i in np.arange(self.N):
-            for j in np.arange(self.N):
-                if arcs[i, j] < 1e-5:
-                    continue
-                plt.plot(self.vertices[[i, j], 0], self.vertices[[i, j], 1], "darkgrey")
-        plt.plot(self.vertices[:, 0], self.vertices[:, 1], "rx")
-
-        # first stage
-        if x is not None:
-            for a in np.arange(self.num_arcs):
-                if x[a] > 0.5:
-                    i, j = self.arcs_array[a]
-                    plt.plot(self.vertices[[i, j], 0], self.vertices[[i, j], 1], "k-", linewidth=5)
-
-        # second stage
-        cols = ["blue", "purple", "green", "red", "yellow", "orange", "grey", "cornflowerblue", "hotpink"]
-        for k in np.arange(K):
-            if len(tau[k]) == 0:
-                continue
-            for a in np.arange(self.num_arcs):
-                if y[k][a] > 0.5:
-                    i, j = self.arcs_array[a]
-                    plt.plot(self.vertices[[i, j], 0], self.vertices[[i, j], 1], cols[k])
-
-        plt.xlim(0, 10)
-        plt.ylim(0, 10)
-
-        if tmp:
-            plt.savefig(f"Results/Plots/tmp_graph_{alg_type}_inst{self.inst_num}_it{it}")
-        else:
-            plt.savefig(f"Results/Plots/final_graph_{alg_type}_inst{self.inst_num}")
-            plt.savefig(f"Results/Plots/final_graph_{alg_type}_inst{self.inst_num}.pdf")
-        plt.close()

@@ -19,7 +19,7 @@ OUTPUT: solution to shortest path problem
 """
 
 
-def algorithm(K, env, time_limit=30*60, print_info=True, problem_type="test", first_sol=False):
+def algorithm(K, env, time_limit=30*60, print_info=True, problem_type="test"):
     # Initialize
     iteration = 0
     start_time = time.time()
@@ -92,17 +92,6 @@ def algorithm(K, env, time_limit=30*60, print_info=True, problem_type="test", fi
             inc_thetas_n[tot_nodes] = theta_i
             prune_count += 1
             new_model = True
-
-            if first_sol:
-                if sum([len(t) for t in placement.values()]) > K+1:
-                    env.plot_graph(problem_type=problem_type, name="good")
-                    inst_label = True
-                else:
-                    env.plot_graph(problem_type=problem_type, name="bad")
-                    inst_label = False
-                tau_i = {k: scen_all[placement[k]] for k in np.arange(K)}
-                return {"good": inst_label, "theta": theta_i, "y": y_i, "tau": tau_i, "it": iteration, "graph": env}
-
             continue
         else:
             new_model = False

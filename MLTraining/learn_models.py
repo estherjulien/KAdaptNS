@@ -53,8 +53,9 @@ def train_suc_pred_rf_class(X, Y, features, problem_type="test", estimators=100,
 
     return score
 
+
 # CLEAN AND BALANCE DATA
-def clean_data(X, Y, classification=False, class_thresh=False, balanced=False):
+def clean_data(X, Y, classification=True, class_thresh=False, balanced=False):
     # clean train data
     X = X.replace([np.inf, -np.inf], np.nan).dropna(how="all")
     Y = Y.replace([np.inf, -np.inf], np.nan).dropna()
@@ -69,8 +70,9 @@ def clean_data(X, Y, classification=False, class_thresh=False, balanced=False):
     for p in np.arange(0.1, 1.1, 0.1):
         perc = ((Y >= p-0.1) & (Y <= p)).sum()/len(Y)
         before.append(perc)
-    print(before)
+    print("distribution before balancing:", before)
 
+    after = None
     if classification:
         if class_thresh:
             Y[Y < class_thresh] = 0
@@ -92,5 +94,5 @@ def clean_data(X, Y, classification=False, class_thresh=False, balanced=False):
         for p in np.arange(0, 2):
             perc = (Y == int(p)).sum() / len(Y)
             after.append(perc)
-        print(after)
+        print("distribution after balancing:", after)
     return X.to_numpy(), Y.to_numpy(), X, Y, before, after

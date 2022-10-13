@@ -16,7 +16,7 @@ if __name__ == "__main__":
     N = int(sys.argv[2])
     K = int(sys.argv[3])
     # load environment
-    with open(f"Data/Instances/inst_results/cb_env_N{N}_{i}.pickle", "rb") as handle:
+    with open(f"CapitalBudgeting/Data/Instances/inst_results/cb_env_N{N}_{i}.pickle", "rb") as handle:
         env = pickle.load(handle)
 
     # run random algorithm

@@ -29,4 +29,4 @@ if __name__ == "__main__":
 
     # run random algorithm
     problem_type = f"sp_random_{env_type}_N{N}_K{K}"
-    algorithm(K, env, problem_type=problem_type, time_limit=30 * 60)
+    algorithm(K, env, problem_type=problem_type)
