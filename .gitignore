@@ -1,11 +1,7 @@
 .idea/
 **/__pycache__
 *.png
-*.pickle
-*.h5
 *.pdf
 *.mps
-*.joblib
-./LearnCB/structured_data_regressor/
 *.json
 *.sh
