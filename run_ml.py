@@ -36,6 +36,8 @@ def main(args, i=None):
         from sp.problem_functions.environment import Graph as Env
         ml_name = f"sp/data/ml_model_{args.problem}_N10_K{args.K_train}_min{args.min_train}_nodes{args.h_train}_" \
                   f"ct{args.ct}_bal_scp-{args.sc_pre}_scmm{args.sc_min_max}.joblib"
+    else:
+        raise "Problem type not implemented"
 
     problem_type = f"{args.problem}_ml_" \
                    f"ML[N10_K{args.K_train}_m{args.min_train}_nodes{args.h_train}_ct{args.ct}_" \

@@ -138,25 +138,3 @@ def cost_fun(project, xi):
 
 def rev_fun(project, xi):
     return (1 + sum(project.psi[i]*xi[i] for i in range(project.xi_dim))/2)*project.rev_nom
-
-
-
-
-# def make_env(X_param, inst_list=None):
-#     N = 10
-#     xi_dim = 2
-#     env = dict()
-#     if inst_list is None:
-#         inst_list = X_param.index
-#     for i in inst_list:
-#         try:
-#             cost_array = np.array([X_param.loc[i, "c_{}".format(p)] for p in range(N)])
-#         except KeyError:
-#             continue
-#         try:
-#             phi_array = np.array([X_param.loc[i, "phi_{}_{}".format(p, xi)] for p in range(N) for xi in range(xi_dim)]).reshape([N, xi_dim])
-#             psi_array = np.array([X_param.loc[i, "psi_{}_{}".format(p, xi)] for p in range(N) for xi in range(xi_dim)]).reshape([N, xi_dim])
-#         except ValueError:
-#             print(i)
-#         env[i] = ProjectsInstance(N, xi_dim, init_cost_vector=cost_array, init_phi_vector=phi_array, init_psi_vector=psi_array)
-#     return env

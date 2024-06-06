@@ -12,19 +12,19 @@ of the master problem (given as scenario problem) and subproblem (scenario probl
 def scenario_fun_update(K, k_new, xi_new, graph, scen_model=None):
     # use same model and just add new constraint
     y = dict()
-    for k in np.arange(K):
-        y[k] = {a: scen_model.getVarByName("y_{}[{}]".format(k, a)) for a in np.arange(graph.num_arcs)}
+    for k in range(K):
+        y[k] = {a: scen_model.getVarByName("y_{}[{}]".format(k, a)) for a in range(graph.num_arcs)}
     theta = scen_model.getVarByName("theta")
 
     scen_model.addConstr(gp.quicksum((1 + xi_new[a] / 2) * graph.distances_array[a] * y[k_new][a]
-                                     for a in np.arange(graph.num_arcs)) <= theta)
+                                     for a in range(graph.num_arcs)) <= theta)
     scen_model.update()
 
     # solve model
     scen_model.Params.OutputFlag = 0
     scen_model.optimize()
     y_sol = dict()
-    for k in np.arange(K):
+    for k in range(K):
         y_sol[k] = {i: var.X for i, var in y[k].items()}
     theta_sol = scen_model.getVarByName("theta").X
 
@@ -37,14 +37,14 @@ def scenario_fun_build(K, tau, graph, gp_env):
     # variables
     theta = scen_model.addVar(lb=0, vtype=GRB.CONTINUOUS, name="theta")
     y = dict()
-    for k in np.arange(K):
+    for k in range(K):
         y[k] = scen_model.addVars(graph.num_arcs, vtype=GRB.BINARY, name="y_{}".format(k))
     # objective function
     scen_model.setObjective(theta, GRB.MINIMIZE)
 
     # deterministic constraints
-    for k in np.arange(K):
-        for j in np.arange(graph.N):
+    for k in range(K):
+        for j in range(graph.N):
             if j == graph.s:
                 scen_model.addConstr(gp.quicksum(y[k][a] for a in graph.arcs_out[j]) >= 1)
                 scen_model.addConstr(gp.quicksum(y[k][a] for a in graph.arcs_in[j]) == 0)
@@ -57,17 +57,17 @@ def scenario_fun_build(K, tau, graph, gp_env):
                 gp.quicksum(y[k][a] for a in graph.arcs_out[j])
                 - gp.quicksum(y[k][a] for a in graph.arcs_in[j]) == 0)
 
-    for k in np.arange(K):
+    for k in range(K):
         for xi in tau[k]:
             scen_model.addConstr(gp.quicksum((1 + xi[a] / 2) * graph.distances_array[a] * y[k][a]
-                                             for a in np.arange(graph.num_arcs)) <= theta)
+                                             for a in range(graph.num_arcs)) <= theta)
     scen_model.update()
 
     # solve model
     scen_model.Params.OutputFlag = 0
     scen_model.optimize()
     y_sol = dict()
-    for k in np.arange(K):
+    for k in range(K):
         # y_sol[k] = {i: var.X for i, var in y[k].items()}
         y_sol[k] = np.array([var.X for i, var in y[k].items()])
     theta_sol = scen_model.getVarByName("theta").X
@@ -87,12 +87,12 @@ def separation_fun(K, x, y, theta, graph, tau, gp_env):
     sep_model.setObjective(zeta, GRB.MAXIMIZE)
 
     # uncertainty set
-    sep_model.addConstr(gp.quicksum(xi[a] for a in np.arange(graph.num_arcs)) <= graph.gamma)
+    sep_model.addConstr(gp.quicksum(xi[a] for a in range(graph.num_arcs)) <= graph.gamma)
 
-    for k in np.arange(K):
+    for k in range(K):
         if len(tau[k]) > 0:
             sep_model.addConstr(zeta <= gp.quicksum((1 + xi[a] / 2) * graph.distances_array[a] * y[k][a]
-                                                    for a in np.arange(graph.num_arcs)) - theta)
+                                                    for a in range(graph.num_arcs)) - theta)
 
     # solve
     sep_model.optimize()
@@ -105,27 +105,27 @@ def separation_fun(K, x, y, theta, graph, tau, gp_env):
 def scenario_fun_update_sub_tree(K, new_node, xi_dict, graph, scen_model=None):
     # use same model and just add new constraint
     y = dict()
-    for k in np.arange(K):
-        y[k] = {a: scen_model.getVarByName("y_{}[{}]".format(k, a)) for a in np.arange(graph.num_arcs)}
+    for k in range(K):
+        y[k] = {a: scen_model.getVarByName("y_{}[{}]".format(k, a)) for a in range(graph.num_arcs)}
     theta = scen_model.getVarByName("theta")
 
-    for node_sec in np.arange(1, len(new_node)):
+    for node_sec in range(1, len(new_node)):
         xi_new = xi_dict[new_node[:node_sec]]
         k_new = new_node[node_sec]
         scen_model.addConstr(gp.quicksum((1 + xi_new[a] / 2) * graph.distances_array[a] * y[k_new][a]
-                                         for a in np.arange(graph.num_arcs)) <= theta, name=f"const_{new_node[:node_sec]}_{k_new}")
+                                         for a in range(graph.num_arcs)) <= theta, name=f"const_{new_node[:node_sec]}_{k_new}")
     scen_model.update()
 
     # solve model
     scen_model.Params.OutputFlag = 0
     scen_model.optimize()
     y_sol = dict()
-    for k in np.arange(K):
+    for k in range(K):
         y_sol[k] = {i: var.X for i, var in y[k].items()}
     theta_sol = scen_model.getVarByName("theta").X
 
     # delete constraints
-    for node_sec in np.arange(1, len(new_node)):
+    for node_sec in range(1, len(new_node)):
         xi_found = new_node[:node_sec]
         k_new = new_node[node_sec]
         scen_model.remove(scen_model.getConstrByName(f"const_{xi_found}_{k_new}"))
@@ -145,7 +145,7 @@ def scenario_fun_deterministic_build(graph, gp_env):
     smn.setObjective(theta, GRB.MINIMIZE)
 
     # deterministic constraints
-    for j in np.arange(graph.N):
+    for j in range(graph.N):
         if j == graph.s:
             smn.addConstr(gp.quicksum(y[a] for a in graph.arcs_out[j]) >= 1)
             smn.addConstr(gp.quicksum(y[a] for a in graph.arcs_in[j]) == 0)
@@ -165,12 +165,12 @@ def scenario_fun_deterministic_build(graph, gp_env):
 
 
 def scenario_fun_deterministic_update(graph, scen, smn):
-    y = {a: smn.getVarByName(f"y[{a}]") for a in np.arange(graph.num_arcs)}
+    y = {a: smn.getVarByName(f"y[{a}]") for a in range(graph.num_arcs)}
     theta = smn.getVarByName("theta")
 
     # constraint
     smn.addConstr(gp.quicksum((1 + scen[a] / 2) * graph.distances_array[a] * y[a]
-                              for a in np.arange(graph.num_arcs)) <= theta, name="new_const")
+                              for a in range(graph.num_arcs)) <= theta, name="new_const")
     smn.update()
     # solve model
     smn.optimize()

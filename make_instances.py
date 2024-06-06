@@ -23,6 +23,8 @@ if __name__ == "__main__":
         from cb.problem_functions.environment import ProjectsInstance as Env
     elif "sp" in args.problem:
         from sp.problem_functions.environment import Graph as Env
+    elif "kp" in args.problem:
+        from kp.problem_functions.environment import KnapsackEnv as Env
 
     env_list = [Env(args.problem, N=args.N, inst_num=i) for i in range(1, args.num_instances+1)]
     Parallel(n_jobs=-1)(delayed(env.make_test_inst)() for env in env_list)

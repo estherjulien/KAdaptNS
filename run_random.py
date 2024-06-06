@@ -14,19 +14,26 @@ OUTPUT: solution of K-B&B
 
 
 def main(args, i=None):
+    # load environment
     if args.problem == "cb":
         from cb.method.random import algorithm
         from cb.problem_functions.environment import ProjectsInstance as Env
-        # load environment
+        env = Env(args.problem, args.N, args.inst_num)
     elif "sp" in args.problem:
         from sp.method.random import algorithm
         from sp.problem_functions.environment import Graph as Env
+        env = Env(args.problem, args.N, args.inst_num)
+    elif "kp" in args.problem:
+        from kp.method.random import algorithm
+        from kp.problem_functions.environment import KnapsackEnv as Env
+        env = Env(args.problem, args.N, args.kp_g, args.kp_b, args.inst_num)
+    else:
+        raise "Not implemented for other problems"
 
-    problem_type = f"cb_random_N{args.N}_K{args.K}"
+    problem_type = f"{args.problem}_random_N{args.N}_K{args.K}"
     if i is not None:
         args.inst_num = i
     # load test environment
-    env = Env(args.problem, args.N, args.inst_num)
     env.read_test_inst()
 
     # run random algorithm
@@ -58,6 +65,10 @@ if __name__ == "__main__":
     parser.add_argument('--N', type=int, default=10)
     parser.add_argument('--K', type=int, default=4)
     parser.add_argument('--time_limit', type=int, default=30)
+
+    # knapsack parameters
+    parser.add_argument('--kp_g', type=int, default=5)
+    parser.add_argument('--kp_b', type=int, default=5)
 
     # PARALLEL RUN params
     parser.add_argument('--parallel', type=int, default=0)
