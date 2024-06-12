@@ -1,6 +1,6 @@
 import os
 
-from cb.problem_functions.functions_milp import *
+from kp.problem_functions.functions_milp import *
 
 from datetime import datetime
 import gurobipy as gp
@@ -10,7 +10,7 @@ import copy
 import time
 
 """
-Code for running K-B&B for solving the capital budgeting problem
+Code for running K-B&B for solving the knapsack problem
 (random depth node selection for K-adaptability branch and bound)
 
 INPUT:  K = number of second-stage decisions (or subsets)
@@ -82,7 +82,7 @@ def algorithm(K, env, time_limit=30*60, print_info=True, problem_type="test"):
             tau = {k: scen_all[placement[k]] for k in range(K)}
 
         # prune if theta higher than current robust theta
-        if theta - theta_i > -1e-8:
+        if theta - theta_i < 1e-8:
             prune_count += 1
             new_model = True
             continue
@@ -154,8 +154,8 @@ def algorithm(K, env, time_limit=30*60, print_info=True, problem_type="test"):
                "inc_thetas_n": inc_thetas_n, "runtime": time.time() - start_time,
                "tot_nodes": tot_nodes, "mp_time": mp_time, "sp_time": sp_time}
 
-    os.makedirs("cb/data/results/random", exist_ok=True)
-    with open(f"cb/data/results/random/final_results_{problem_type}_s{env.inst_num}.pkl", "wb") as handle:
+    os.makedirs("src/kp/data/results/random", exist_ok=True)
+    with open(f"src/kp/data/results/random/final_results_{problem_type}_s{env.inst_num}.pkl", "wb") as handle:
         pickle.dump(results, handle)
 
     return results

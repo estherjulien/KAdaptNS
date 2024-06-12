@@ -3,7 +3,7 @@ import copy
 import os
 
 """
-Code for making a capital budgeting instance class
+Code for making a knapsack instance class
 """
 
 
@@ -42,7 +42,7 @@ class KnapsackEnv:
                     env.write_test_inst()
 
     def read_test_inst(self):
-        inst_path = f"kp/data/instances/kp_env_N{self.N}_" \
+        inst_path = f"src/kp/data/instances/kp_env_N{self.N}_" \
                     f"g{int(self.gamma_perc*100)}_b{int(self.budget_perc*100)}" \
                     f"_s{self.inst_num}.txt"
 
@@ -68,8 +68,8 @@ class KnapsackEnv:
 
     def write_test_inst(self):
         # different:
-        os.makedirs("kp/data/instances", exist_ok=True)
-        inst_path = f"kp/data/instances/kp_env_N{self.N}_" \
+        os.makedirs("src/kp/data/instances", exist_ok=True)
+        inst_path = f"src/kp/data/instances/kp_env_N{self.N}_" \
                     f"g{int(self.gamma_perc*100)}_b{int(self.budget_perc*100)}" \
                     f"_s{self.inst_num}.txt"
         f = open(inst_path, "w+")

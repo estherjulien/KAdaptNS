@@ -126,14 +126,8 @@ def algorithm(K, env, time_limit=30*60, print_info=True, problem_type="test"):
             K_set = [0]
             k_new = 0
         elif len(full_list) == K:
-            # HEURISTIC NODE SELECTION
             K_set = np.arange(K)
-            objs = []
-            for k_check in K_set:
-                # add to node set
-                theta_check, _, _, _ = scenario_fun_update(K, k_check, xi, env, model, delete_added_cons=True)
-                objs.append(theta_check)
-            k_new = np.argmax(objs)
+            k_new = rng.randint(K)
         else:
             K_prime = min(K, full_list[-1] + 2)
             K_set = np.arange(K_prime)
@@ -160,8 +154,8 @@ def algorithm(K, env, time_limit=30*60, print_info=True, problem_type="test"):
                "inc_thetas_n": inc_thetas_n, "runtime": time.time() - start_time,
                "tot_nodes": tot_nodes, "mp_time": mp_time, "sp_time": sp_time}
 
-    os.makedirs("cb/data/results/heuristic", exist_ok=True)
-    with open(f"cb/data/results/heuristic/final_results_{problem_type}_s{env.inst_num}.pkl", "wb") as handle:
+    os.makedirs("src/cb/data/results/random", exist_ok=True)
+    with open(f"src/cb/data/results/random/final_results_{problem_type}_s{env.inst_num}.pkl", "wb") as handle:
         pickle.dump(results, handle)
 
     return results

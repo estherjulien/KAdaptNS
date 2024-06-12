@@ -251,8 +251,8 @@ def algorithm(K, env, att_series=None, max_level=None, success_model_name=None, 
                "inc_thetas_n": inc_thetas_n, "runtime": time.time() - start_time,
                "tot_nodes": tot_nodes, "mp_time": mp_time, "sp_time": sp_time}
 
-    os.makedirs("cb/data/results/ml", exist_ok=True)
-    with open(f"cb/data/results/ml/final_results_{problem_type}_s{env.inst_num}.pkl", "wb") as handle:
+    os.makedirs("src/cb/data/results/ml", exist_ok=True)
+    with open(f"src/cb/data/results/ml/final_results_{problem_type}_s{env.inst_num}.pkl", "wb") as handle:
         pickle.dump(results, handle)
 
     return results

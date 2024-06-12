@@ -22,17 +22,17 @@ class TrainRF:
 
         # paths
         if "cb" in problem:
-            os.makedirs("cb/data", exist_ok=True)
+            os.makedirs("src/cb/data", exist_ok=True)
             ml_info = f"{problem}_N{N}_K{K}_min{min_train}_nodes{h_train}_ct{ct}_bal_scp-{sc_pre}_scmm{sc_min_max}"
-            self.ml_model_path = f"cb/data/ml_model_{ml_info}.joblib"
-            self.ml_info_path = f"cb/data/ml_info_{ml_info}.pkl"
-            self.feat_imp_path = f"cb/data/ml_feat_imp_{ml_info}.pkl"
+            self.ml_model_path = f"src/cb/data/ml_model_{ml_info}.joblib"
+            self.ml_info_path = f"src/cb/data/ml_info_{ml_info}.pkl"
+            self.feat_imp_path = f"src/cb/data/ml_feat_imp_{ml_info}.pkl"
         elif "sp" in problem:
-            os.makedirs("sp/data", exist_ok=True)
+            os.makedirs("src/sp/data", exist_ok=True)
             ml_info = f"{problem}_N{N}_K{K}_min{min_train}_nodes{h_train}_ct{ct}_bal_scp-{sc_pre}_scmm{sc_min_max}"
-            self.ml_model_path = f"sp/data/ml_model_{ml_info}.joblib"
-            self.ml_info_path = f"sp/data/ml_info_{ml_info}.pkl"
-            self.feat_imp_path = f"sp/data/ml_feat_imp_{ml_info}.pkl"
+            self.ml_model_path = f"src/sp/data/ml_model_{ml_info}.joblib"
+            self.ml_info_path = f"src/sp/data/ml_info_{ml_info}.pkl"
+            self.feat_imp_path = f"src/sp/data/ml_feat_imp_{ml_info}.pkl"
 
     def data_pipeline(self):
         print(" Preparing data...")

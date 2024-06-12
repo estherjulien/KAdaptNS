@@ -78,7 +78,7 @@ class ProjectsInstance:
             self.write_test_inst()
 
     def read_test_inst(self):
-        inst_path = f"cb/data/instances/cb_env_N{self.N}_s{self.inst_num}.txt"
+        inst_path = f"src/cb/data/instances/cb_env_N{self.N}_s{self.inst_num}.txt"
 
         with open(inst_path, 'r') as f:
             f_lines = f.readlines()
@@ -113,8 +113,8 @@ class ProjectsInstance:
 
     def write_test_inst(self):
         # different:
-        os.makedirs("cb/data/instances", exist_ok=True)
-        test_dir = f"cb/data/instances/cb_env_N{self.N}_s{self.inst_num}.txt"
+        os.makedirs("src/cb/data/instances", exist_ok=True)
+        test_dir = f"src/cb/data/instances/cb_env_N{self.N}_s{self.inst_num}.txt"
         f = open(test_dir, "w+")
         f.write(str(self.inst_num) + " ")
         f.write(str(self.N) + " ")

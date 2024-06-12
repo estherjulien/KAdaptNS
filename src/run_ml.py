@@ -1,5 +1,4 @@
 from multiprocessing import Process
-from joblib import Parallel, delayed
 from argparse import ArgumentParser
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -27,17 +26,17 @@ def main(args, i=None):
         args.max_level = None
 
     if args.problem == "cb":
-        from cb.method.suc_pred import algorithm
+        from cb.method.ml import algorithm
         from cb.problem_functions.environment import ProjectsInstance as Env
         ml_name = f"cb/data/ml_model_cb_N10_K{args.K_train}_min{args.min_train}_nodes{args.h_train}_ct{args.ct}_bal_" \
                   f"scp-{args.sc_pre}_scmm{args.sc_min_max}.joblib"
     elif "sp" in args.problem:
-        from sp.method.suc_pred import algorithm
+        from sp.method.ml import algorithm
         from sp.problem_functions.environment import Graph as Env
         ml_name = f"sp/data/ml_model_{args.problem}_N10_K{args.K_train}_min{args.min_train}_nodes{args.h_train}_" \
                   f"ct{args.ct}_bal_scp-{args.sc_pre}_scmm{args.sc_min_max}.joblib"
     else:
-        raise "Problem type not implemented"
+        raise "ML node selection for this problem type not implemented"
 
     problem_type = f"{args.problem}_ml_" \
                    f"ML[N10_K{args.K_train}_m{args.min_train}_nodes{args.h_train}_ct{args.ct}_" \
@@ -57,7 +56,6 @@ def main(args, i=None):
 def main_parallel(args):
     s_start = (args.job_num - 1)*args.n_procs + 1
     s_end = args.job_num*args.n_procs + 1
-    # Parallel(n_jobs=args.n_procs)(delayed(main)(args, i) for i in range(s_start, s_end))
     # start processes
     procs = []
     seed_ids = range(s_start, s_end)
@@ -74,7 +72,7 @@ def main_parallel(args):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument('--problem', type=str, default='cb')
+    parser.add_argument('--problem', type=str, default='cb', choices=["cb", "sp_sphere"])
     parser.add_argument('--inst_num', type=int, default=1)
     parser.add_argument('--N', type=int, default=10)
     parser.add_argument('--K', type=int, default=4)

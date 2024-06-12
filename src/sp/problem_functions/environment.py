@@ -11,7 +11,6 @@ class Graph:
         self.N = N
         self.problem = problem
         self.inst_num = inst_num
-        # TODO
         if problem == "sp_normal":
             self.gamma = 7
             self.degree = 5
@@ -46,7 +45,7 @@ class Graph:
 
     def read_test_inst(self):
         """ Load instances data. """
-        inst_path = f"sp/data/instances/{self.problem}/{self.problem}_env_N{self.N}_s{self.inst_num}.txt"
+        inst_path = f"src/sp/data/instances/{self.problem}/{self.problem}_env_N{self.N}_s{self.inst_num}.txt"
         with open(inst_path, 'r') as f:
             f_lines = f.readlines()
 
@@ -80,8 +79,8 @@ class Graph:
 
     def write_test_inst(self):
         # different:
-        os.makedirs(f"sp/data/instances/{self.problem}", exist_ok=True)
-        test_dir = f"sp/data/instances/{self.problem}/{self.problem}_env_N{self.N}_s{self.inst_num}.txt"
+        os.makedirs(f"data/sp/instances/{self.problem}", exist_ok=True)
+        test_dir = f"data/sp/instances/{self.problem}/{self.problem}_env_N{self.N}_s{self.inst_num}.txt"
         f = open(test_dir, "w+")
         f.write(str(self.inst_num) + " ")
         f.write(str(self.N) + " ")

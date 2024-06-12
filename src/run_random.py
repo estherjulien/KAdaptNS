@@ -1,7 +1,5 @@
 from multiprocessing import Process
-from joblib import Parallel, delayed
 from argparse import ArgumentParser
-import time
 
 """
 MAIN file for K-B&B (random depth first K-adaptability branch-and-bound)
@@ -15,22 +13,27 @@ OUTPUT: solution of K-B&B
 
 def main(args, i=None):
     # load environment
-    if args.problem == "cb":
-        from cb.method.random import algorithm
+    if "cb" in args.problem:
+        # from src.cb.method.random import algorithm
         from cb.problem_functions.environment import ProjectsInstance as Env
+        from cb.method.random import algorithm
         env = Env(args.problem, args.N, args.inst_num)
+        problem_type = f"{args.problem}_random_N{args.N}_K{args.K}"
     elif "sp" in args.problem:
-        from sp.method.random import algorithm
+        # from src.sp.method.random import algorithm
         from sp.problem_functions.environment import Graph as Env
+        from sp.method.random import algorithm
         env = Env(args.problem, args.N, args.inst_num)
+        problem_type = f"{args.problem}_random_N{args.N}_K{args.K}"
     elif "kp" in args.problem:
-        from kp.method.random import algorithm
+        # from src.kp.method.random import algorithm
         from kp.problem_functions.environment import KnapsackEnv as Env
+        from kp.method.random import algorithm
         env = Env(args.problem, args.N, args.kp_g, args.kp_b, args.inst_num)
+        problem_type = f"{args.problem}_random_N{args.N}_g{args.kp_g}_b{args.kp_b}_K{args.K}"
     else:
         raise "Not implemented for other problems"
 
-    problem_type = f"{args.problem}_random_N{args.N}_K{args.K}"
     if i is not None:
         args.inst_num = i
     # load test environment
@@ -43,7 +46,6 @@ def main(args, i=None):
 def main_parallel(args):
     s_start = (args.job_num - 1)*args.n_procs + 1
     s_end = args.job_num*args.n_procs + 1
-    # Parallel(n_jobs=args.n_procs)(delayed(main)(args, i) for i in range(s_start, s_end))
     # start processes
     procs = []
     seed_ids = range(s_start, s_end)
@@ -60,7 +62,7 @@ def main_parallel(args):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument('--problem', type=str, default='cb')
+    parser.add_argument('--problem', type=str, default='cb', choices=["cb", "sp_normal", "sp_sphere", "kp"])
     parser.add_argument('--inst_num', type=int, default=1)
     parser.add_argument('--N', type=int, default=10)
     parser.add_argument('--K', type=int, default=4)
