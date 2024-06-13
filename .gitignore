@@ -9,6 +9,4 @@
 *.pkl
 *.joblib
 *.txt
-Z_EXTRA/
-Z_old/
 Z_private/
