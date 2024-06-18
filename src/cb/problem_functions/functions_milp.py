@@ -1,4 +1,4 @@
-from cb.problem_functions.environment import *
+from src.cb.problem_functions.environment import *
 from gurobipy import GRB
 import gurobipy as gp
 import numpy as np
@@ -11,6 +11,7 @@ of the master problem (given as scenario problem) and subproblem (scenario probl
 
 
 # SCENARIO FUN = MASTER PROBLEM
+# update master problem with new scenario in specified subset (k_new)
 def scenario_fun_update(K, k_new, xi_new, env, scen_model, delete_added_cons=False):
     projects = env.projects
     N = env.N
@@ -60,6 +61,7 @@ def scenario_fun_update(K, k_new, xi_new, env, scen_model, delete_added_cons=Fal
     return theta_sol, [x_0_sol, x_sol], [y_0_sol, y_sol], scen_model
 
 
+# build master problem
 def scenario_fun_build(K, tau, env, gp_env):
     projects = env.projects
     N = env.N
@@ -146,7 +148,7 @@ def separation_fun(K, x_input, y_input, theta, env, tau, gp_env):
     return zeta_sol, xi_sol
 
 
-# SUB TREE MODEL
+# SUB TREE MODEL (for training data generation)
 def scenario_fun_update_sub_tree(K, new_node, xi_dict, env, scen_model=None):
     # use same model and just add new constraint
     projects = env.projects
@@ -198,7 +200,7 @@ def scenario_fun_update_sub_tree(K, new_node, xi_dict, env, scen_model=None):
     return theta_sol, [x_0_sol, x_sol], [y_0_sol, y_sol]
 
 
-# STATIC SOLUTION ROBUST COUNTERPART
+# STATIC SOLUTION ROBUST COUNTERPART (for features)
 def static_solution_rc(env, gp_env):
     print("     Making model")
     src = gp.Model("Scenario-Based K-Adaptability Problem", env=gp_env)
@@ -261,7 +263,8 @@ def static_solution_rc(env, gp_env):
     return [x_0_sol, x_sol]
 
 
-# SCENARIO FUN STATIC ATTRIBUTES
+# SCENARIO FUN STATIC ATTRIBUTES (for features)
+# build problem
 def scenario_fun_static_build(env, x_input, gp_env):
     x_0, x = x_input
     N = env.N
@@ -284,6 +287,7 @@ def scenario_fun_static_build(env, x_input, gp_env):
     return sms
 
 
+# update problem with new scenario
 def scenario_fun_static_update(env, scen, x_input, sms):
     x_0, x = x_input
     projects = env.projects
@@ -321,7 +325,8 @@ def scenario_fun_static_update(env, scen, x_input, sms):
     return theta_sol, [y_0_sol, y_sol]
 
 
-# SCENARIO FUN DETERMINISTIC ATTRIBUTES
+# SCENARIO FUN DETERMINISTIC ATTRIBUTES (for features)
+# build problem
 def scenario_fun_deterministic_build(env, gp_env):
     smd = gp.Model("Scenario-Based K-Adaptability Problem", env=gp_env)
     projects = env.projects
@@ -346,6 +351,7 @@ def scenario_fun_deterministic_build(env, gp_env):
     return smd
 
 
+# update problem with new scenario
 def scenario_fun_deterministic_update(env, scen, smd):
     projects = env.projects
     N = env.N

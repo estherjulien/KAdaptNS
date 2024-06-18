@@ -4,10 +4,10 @@ import os
 
 """
 Code for making a knapsack instance class
+KnapsackEnv - knapsack problem instance
 """
 
 
-# class per project where can be invested in
 class KnapsackEnv:
     def __init__(self, problem, N, gamma_perc=None, budget_perc=None, inst_num=0):
         self.problem = problem

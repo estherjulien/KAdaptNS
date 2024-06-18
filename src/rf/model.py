@@ -1,13 +1,17 @@
-import os
-
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
 import numpy as np
 import pandas as pd
 import joblib
-import copy
 import time
+import os
+
+
+"""
+data for training a random forest
+- includes cleaning, balancing, and min/max scaling of data.
+"""
 
 
 class TrainRF:

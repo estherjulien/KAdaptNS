@@ -1,4 +1,4 @@
-from sp.problem_functions.att_functions import *
+from src.sp.problem_functions.att_functions import *
 
 from joblib import Parallel, delayed
 from datetime import datetime
@@ -20,7 +20,8 @@ INPUT:  K = number of second-stage decisions (or subsets)
         time_limit = seconds spent per instance
         perc_label = percentage of found thetas chosen as best (5%). The corresponding paths are marked as good paths
         num_runs = number of initial runs done
-OUTPUT: training data for the shortest path problem
+OUTPUT: training data for the shortest path problem 
+        in src/sp/data/train_data/
 """
 
 
@@ -153,9 +154,9 @@ def fill_subsets(K, env, att_series, gp_env):
         if zeta < 1e-04:
             now = datetime.now().time()
             print(
-                "Instance SPD {}: ROBUST IN FILLING SUBSETS RUN ({}) (time {})   :theta = {},    zeta = {}   Xi{}".format(
+                "Instance SPD {}: ROBUST IN FILLING SUBSETS RUN ({}) (time {})   :obj = {},    violation = {}".format(
                     env.inst_num, np.round(time.time() - start_time, 3), now,
-                    np.round(theta, 4), np.round(zeta, 4), [len(t) for t in tau.values()]))
+                    np.round(theta, 4), np.round(zeta, 4)))
             break
         else:
             new_model = False
@@ -242,9 +243,9 @@ def random_pass(K, env, tau, gp_env=None, progress=False, time_per_node=None):
             if progress:
                 now = datetime.now().time()
                 print(
-                    "Instance SPD {}: INIT PASS ROBUST ({}) (time {})   :theta = {},    zeta = {}   Xi{}".format(
+                    "Instance SPD {}: INIT PASS ROBUST ({}) (time {})   :obj = {},    violation = {}".format(
                         env.inst_num, np.round(time.time() - start_time, 3), now,
-                        np.round(theta, 4), np.round(zeta, 4), [len(t) for t in tau.values()]))
+                        np.round(theta, 4), np.round(zeta, 4)))
             break
         else:
             new_model = False

@@ -3,11 +3,19 @@ from argparse import ArgumentParser
 
 """
 MAIN file for K-B&B (random depth first K-adaptability branch-and-bound)
-INPUT:  i = instance number
-        N = instance size
-        K = number of second-stage decisions
+INPUT:  -- instance parameters
+        problem         - benchmark problem 
+        inst_num        - instance id
+        N               - instance size
+        K               - number of second-stage decisions
+        time_limit      - time limit of algorithm (in minutes)
+        
+        -- knapsack parameters
+        kp_g    - knapsack parameter gamma (uncertainty)
+        kp_b    - knapsack parameter c (for budget capacity)
+        
 OUTPUT: solution of K-B&B
-        saved in cb/data/results/decisions
+        saved in src/<benchmark>/data/results/random/
 """
 
 

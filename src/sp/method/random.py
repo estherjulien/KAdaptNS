@@ -1,4 +1,4 @@
-from sp.problem_functions.functions_milp import *
+from src.sp.problem_functions.functions_milp import *
 
 from datetime import datetime
 import numpy as np
@@ -15,7 +15,7 @@ INPUT:  K = number of second-stage decisions (or subsets)
         time_limit = seconds spend per instance - if limit is reached, 
                      the incumbent solution will be used as final solution
 OUTPUT: solution to shortest path problem
-        saved in ShortestPath/Data/Results/Decisions
+        saved in src/sp/data/results/random/
 """
 
 
@@ -132,8 +132,8 @@ def algorithm(K, env, time_limit=30*60, print_info=True, problem_type="test"):
     now = datetime.now().time()
     now_nice = f"{now.hour}:{now.minute}:{now.second}"
     print(f"Instance R {env.inst_num}, completed at {now_nice}, solved in {np.round(runtime/60, 3)} minutes")
-    results = {"theta": theta_i, "inc_thetas_t": inc_thetas_t,
-               "inc_thetas_n": inc_thetas_n, "runtime": time.time() - start_time,
+    results = {"obj": theta_i, "inc_obj_time": inc_thetas_t,
+               "inc_obj_nodes": inc_thetas_n, "runtime": time.time() - start_time,
                "tot_nodes": tot_nodes, "mp_time": mp_time, "sp_time": sp_time}
 
     os.makedirs("src/sp/data/results/random", exist_ok=True)

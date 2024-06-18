@@ -1,4 +1,4 @@
-from cb.problem_functions.att_functions import *
+from src.cb.problem_functions.att_functions import *
 
 from joblib import Parallel, delayed
 from datetime import datetime
@@ -20,9 +20,10 @@ INPUT:  K = number of second-stage decisions (or subsets)
         env = instance of the capital budgeting problem
         att_series = names of attributes used for this problem
         time_limit = seconds spent per instance
-        perc_label = percentage of found thetas chosen as best (5%). The corresponding paths are marked as good paths
+        perc_label = percentage of found objective values chosen as best (5%). The corresponding paths are marked as good paths
         num_runs = number of initial runs done
 OUTPUT: training data for the capital budgeting problem
+        in src/cb/data/train_data/
 """
 
 
@@ -170,9 +171,9 @@ def fill_subsets(K, env, att_series, x_static, gp_env):
         if zeta < 1e-04:
             now = datetime.now().time()
             print(
-                "Instance SPD {}: ROBUST IN FILLING SUBSETS RUN ({}) (time {})   :theta = {},    zeta = {}   Xi{}".format(
+                "Instance SPD {}: ROBUST IN FILLING SUBSETS RUN ({}) (time {})   :obj = {},    violation = {}".format(
                     env.inst_num, np.round(time.time() - start_time, 3), now,
-                    np.round(theta, 4), np.round(zeta, 4), [len(t) for t in tau.values()]))
+                    np.round(theta, 4), np.round(zeta, 4)))
             break
         else:
             new_model = False
@@ -260,9 +261,9 @@ def random_pass(K, env, tau, gp_env=None, progress=False, time_per_node=None):
             if progress:
                 now = datetime.now().time()
                 print(
-                    "Instance SPD {}: INIT PASS ROBUST ({}) (time {})   :theta = {},    zeta = {}   Xi{}".format(
+                    "Instance SPD {}: INIT PASS ROBUST ({}) (time {})   :obj = {},    violation = {}".format(
                         env.inst_num, np.round(time.time() - start_time, 3), now,
-                        np.round(theta, 4), np.round(zeta, 4), [len(t) for t in tau.values()]))
+                        np.round(theta, 4), np.round(zeta, 4)))
             break
         else:
             new_model = False
@@ -283,7 +284,7 @@ def random_pass(K, env, tau, gp_env=None, progress=False, time_per_node=None):
 # function for making the sub tree
 def make_upper_tree(K, env, att_series, tau, tau_att, theta_init, theta_start, zeta_init,
                     tot_scens_init, att_index, depth_init_alt, theta_init_alt,
-                    max_depth=5, x_static=None, time_limit=5*60, rt_mean=10):  # new scaling ways
+                    max_depth=5, x_static=None, time_limit=5*60, rt_mean=10):
     rng = np.random.RandomState(env.inst_num)
     gp_env = gp.Env()
     gp_env.setParam("OutputFlag", 0)

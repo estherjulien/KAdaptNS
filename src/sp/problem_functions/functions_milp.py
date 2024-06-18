@@ -9,6 +9,7 @@ of the master problem (given as scenario problem) and subproblem (scenario probl
 
 
 # SCENARIO FUN = MASTER PROBLEM
+# update master problem with new scenario in specified subset (k_new)
 def scenario_fun_update(K, k_new, xi_new, graph, scen_model=None):
     # use same model and just add new constraint
     y = dict()
@@ -31,6 +32,7 @@ def scenario_fun_update(K, k_new, xi_new, graph, scen_model=None):
     return theta_sol, None, y_sol, scen_model
 
 
+# build master problem
 def scenario_fun_build(K, tau, graph, gp_env):
     scen_model = gp.Model("Scenario-Based K-Adaptability Problem", gp_env)
     N = graph.N
@@ -101,7 +103,7 @@ def separation_fun(K, x, y, theta, graph, tau, gp_env):
     return zeta_sol, xi_sol
 
 
-# SUB TREE MODEL
+# SUB TREE MODEL (for training data generation)
 def scenario_fun_update_sub_tree(K, new_node, xi_dict, graph, scen_model=None):
     # use same model and just add new constraint
     y = dict()
@@ -134,7 +136,8 @@ def scenario_fun_update_sub_tree(K, new_node, xi_dict, graph, scen_model=None):
     return theta_sol, None, y_sol
 
 
-# SCENARIO FUN DETERMINISTIC ATTRIBUTES
+# SCENARIO FUN DETERMINISTIC ATTRIBUTES (for features)
+# build problem
 def scenario_fun_deterministic_build(graph, gp_env):
     smn = gp.Model("Scenario-Based K-Adaptability Problem", env=gp_env)
     N = graph.N
@@ -164,6 +167,7 @@ def scenario_fun_deterministic_build(graph, gp_env):
     return smn
 
 
+# update problem with new scenario
 def scenario_fun_deterministic_update(graph, scen, smn):
     y = {a: smn.getVarByName(f"y[{a}]") for a in range(graph.num_arcs)}
     theta = smn.getVarByName("theta")

@@ -1,11 +1,5 @@
-import os
-
-from cb.problem_functions.att_functions import *
-from cb.problem_functions.functions_milp import *
-
-import warnings
-warnings.filterwarnings("ignore", category=UserWarning)
-warnings.filterwarnings("ignore", category=RuntimeWarning)
+from src.cb.problem_functions.att_functions import *
+from src.cb.problem_functions.functions_milp import *
 
 from datetime import datetime
 import gurobipy as gp
@@ -14,6 +8,10 @@ import joblib
 import pickle
 import copy
 import time
+
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 """
 Code for running K-B&B-NodeSelection for solving the capital budgeting problem
@@ -27,8 +25,9 @@ INPUT:  K = number of second-stage decisions (or subsets)
                      the incumbent solution will be used as final solution
         thresh = threshold that is applied to ML predictions
         num_runs = number of initial runs done
+        sc_pre = scaling method of training data
 OUTPUT: solution to capital budgeting problem
-        saved in CapitalBudgeting/Data/Results/Decisions
+        saved in src/cb/data/results/ml/
 """
 
 
@@ -86,10 +85,9 @@ def algorithm(K, env, att_series=None, max_level=None, success_model_name=None, 
             else:   # store incumbent theta
                 if print_info:
                     now = datetime.now().time()
-                    print("Instance S {}: ROBUST DURING PREPROCESSING at iteration {} ({}) (time {})   :theta = {},    zeta = {}   Xi{},   "
-                          "prune count = {}".format(
+                    print("Instance S {}: ROBUST DURING PREPROCESSING at iteration {} ({}) (time {})   :obj = {},    violation = {}".format(
                            env.inst_num, tot_nodes, np.round(time.time() - start_time, 3), now, np.round(theta, 4),
-                           np.round(zeta, 4), num_in_subset, prune_count))
+                           np.round(zeta, 4)))
                 theta_i = copy.deepcopy(theta)
                 inc_thetas_t[time.time() - start_time] = theta_i
                 inc_thetas_n[tot_nodes] = theta_i
@@ -167,10 +165,9 @@ def algorithm(K, env, att_series=None, max_level=None, success_model_name=None, 
         if zeta <= 1e-04:
             if print_info:
                 now = datetime.now().time()
-                print("Instance S {}: ROBUST at iteration {} ({}) (time {})   :theta = {},    zeta = {}   Xi{},   "
-                      "prune count = {}".format(
+                print("Instance S {}: ROBUST at iteration {} ({}) (time {})   :obj = {},    violation = {}".format(
                     env.inst_num, tot_nodes, np.round(time.time() - start_time, 3), now, np.round(theta, 4),
-                    np.round(zeta, 4), [len(t) for t in placement.values()], prune_count))
+                    np.round(zeta, 4)))
 
             theta_i, x_i, y_i = (copy.deepcopy(theta), copy.deepcopy(x), copy.deepcopy(y))
             tau_i = copy.deepcopy(tau)
@@ -247,8 +244,8 @@ def algorithm(K, env, att_series=None, max_level=None, success_model_name=None, 
     now_nice = f"{now.hour}:{now.minute}:{now.second}"
     print(f"Instance SP {env.inst_num}, completed at {now_nice}, solved in {np.round(runtime/60, 3)} minutes")
 
-    results = {"theta": theta_i, "inc_thetas_t": inc_thetas_t,
-               "inc_thetas_n": inc_thetas_n, "runtime": time.time() - start_time,
+    results = {"obj": theta_i, "inc_obj_time": inc_thetas_t,
+               "inc_obj_nodes": inc_thetas_n, "runtime": time.time() - start_time,
                "tot_nodes": tot_nodes, "mp_time": mp_time, "sp_time": sp_time}
 
     os.makedirs("src/cb/data/results/ml", exist_ok=True)

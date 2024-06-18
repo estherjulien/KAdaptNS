@@ -3,7 +3,6 @@ Welcome to the data directory accompanying the results of our paper titled **"Ma
 Two-stage Robust Optimization"**. This repository contains all the datasets referenced in the publication. 
 
 ### Structure of the Repository
-
 The directory contains the raw datasets of the results of the **Experiments** section. Each dataset is provided in the standard format CSV. The results are grouped per benchmark: capital budgeting (**cb/**), knapsack problem (**kp**), shortest path (**sp_normal/**), and shortest path on a sphere (**sp_sphere/**).
 
 Per benchmark, we have the following files (if applicable).

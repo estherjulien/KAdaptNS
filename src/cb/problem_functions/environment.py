@@ -3,6 +3,10 @@ import os
 
 """
 Code for making a capital budgeting instance class
+Project  (class)            - one project with a nominal cost and revenue and uncertainty parameters phi, psi, and the dimension.
+ProjectsInstance (class)    - instance of the capital budgeting problem 
+cost_fun (function)         - uncertain cost function, mapping of phi and uncertain scenario
+rev_fun (function)          - uncertain revenue function, mapping of psi and uncertain scenario
 """
 
 

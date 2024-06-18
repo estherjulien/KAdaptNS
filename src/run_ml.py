@@ -4,20 +4,25 @@ import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 
 """
-MAIN file for K-B&B-NodeSelection for capital budgeting (node selection with ML in K-adaptability branch-and-bound)
+MAIN file for K-B&B-NodeSelection for a benchmark problem
+(ML guided node selection in K-adaptability branch-and-bound algorithm)
 INPUT:  -- instance parameters
-        i = instance number
-        N = instance size
-        K = number of second-stage decisions
+        problem         - benchmark problem 
+        inst_num        - instance id
+        N               - instance size
+        K               - number of second-stage decisions
+        time_limit      - time limit of algorithm (in minutes)
         -- ML model parameters
-        K_ML = value of K used to generate training data
-        minutes = num. minutes spend per instance in generating training data
-        hours = number of hours spend on generating training data
-        ct = classification threshold - from which probability score on the quality is considered good.
+        K_train         - value of K used to generate training data
+        min_train       - num. minutes spent per instance in generating training data
+        h_train         - number of hours spend on generating training data
+        ct              - classification threshold = from which probability score on the quality is considered good.
+        
         -- K-B&B-NodeSelection parameters
         max_level = maximum level up to where ML model is applied for node selection. from then on random
+
 OUTPUT: solution of K-B&B-NodeSelection
-        saved in CapitalBudgeting/Data/Results/Decisions
+        saved in src/<benchmark>/data/results/ml/
 """
 
 
@@ -28,12 +33,12 @@ def main(args, i=None):
     if args.problem == "cb":
         from cb.method.ml import algorithm
         from cb.problem_functions.environment import ProjectsInstance as Env
-        ml_name = f"cb/data/ml_model_cb_N10_K{args.K_train}_min{args.min_train}_nodes{args.h_train}_ct{args.ct}_bal_" \
+        ml_name = f"src/cb/data/ml_model_cb_N10_K{args.K_train}_min{args.min_train}_nodes{args.h_train}_ct{args.ct}_bal_" \
                   f"scp-{args.sc_pre}_scmm{args.sc_min_max}.joblib"
     elif "sp" in args.problem:
         from sp.method.ml import algorithm
         from sp.problem_functions.environment import Graph as Env
-        ml_name = f"sp/data/ml_model_{args.problem}_N10_K{args.K_train}_min{args.min_train}_nodes{args.h_train}_" \
+        ml_name = f"src/sp/data/ml_model_{args.problem}_N10_K{args.K_train}_min{args.min_train}_nodes{args.h_train}_" \
                   f"ct{args.ct}_bal_scp-{args.sc_pre}_scmm{args.sc_min_max}.joblib"
     else:
         raise "ML node selection for this problem type not implemented"
@@ -83,10 +88,11 @@ if __name__ == "__main__":
     parser.add_argument('--min_train', type=int, default=10)
     parser.add_argument('--h_train', type=int, default=2)
     parser.add_argument('--ct', type=int, default=5)
-    parser.add_argument('--max_level', type=int, default=-1)
-
     parser.add_argument('--sc_pre', type=str, default="dive", choices=["dive", "alt", "no"])
     parser.add_argument('--sc_min_max', type=int, default=0)
+
+    # K-B&B-NodeSelection param
+    parser.add_argument('--max_level', type=int, default=-1)
 
     # PARALLEL RUN params
     parser.add_argument('--parallel', type=int, default=0)

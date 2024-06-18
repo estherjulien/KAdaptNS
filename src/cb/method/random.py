@@ -1,6 +1,6 @@
 import os
 
-from cb.problem_functions.functions_milp import *
+from src.cb.problem_functions.functions_milp import *
 
 from datetime import datetime
 import gurobipy as gp
@@ -18,7 +18,7 @@ INPUT:  K = number of second-stage decisions (or subsets)
         time_limit = seconds spend per instance - if limit is reached, 
                      the incumbent solution will be used as final solution
 OUTPUT: solution to capital budgeting problem
-        saved in CapitalBudgeting/Data/Results/Decisions
+        saved in src/cb/data/results/random/
 """
 
 
@@ -96,11 +96,9 @@ def algorithm(K, env, time_limit=30*60, print_info=True, problem_type="test"):
         if zeta <= 1e-04:
             if print_info:
                 now = datetime.now().time()
-                print("Instance R {}: ROBUST at iteration {} ({}) (time {})   :theta = {},    zeta = {}   Xi{},   "
-                      "prune count = {}".format(env.inst_num, iteration, np.round(time.time()-start_time, 3), now,
-                                                np.round(theta, 4), np.round(zeta, 4),
-                                                [len(t) for t in placement.values()], prune_count))
-
+                print("Instance R {}: ROBUST at iteration {} ({}) (time {})   :obj = {},    violation = {}".format(
+                    env.inst_num, iteration, np.round(time.time()-start_time, 3), now,
+                                                np.round(theta, 4), np.round(zeta, 4)))
             try:
                 env.plot_graph_solutions(K, y, tau, x=x, alg_type=problem_type, tmp=True, it=iteration)
             except:
@@ -150,8 +148,8 @@ def algorithm(K, env, time_limit=30*60, print_info=True, problem_type="test"):
     now = datetime.now().time()
     now_nice = f"{now.hour}:{now.minute}:{now.second}"
     print(f"Instance R {env.inst_num}, completed at {now_nice}, solved in {np.round(runtime/60, 3)} minutes")
-    results = {"theta": theta_i, "inc_thetas_t": inc_thetas_t,
-               "inc_thetas_n": inc_thetas_n, "runtime": time.time() - start_time,
+    results = {"obj": theta_i, "inc_obj_time": inc_thetas_t,
+               "inc_obj_nodes": inc_thetas_n, "runtime": time.time() - start_time,
                "tot_nodes": tot_nodes, "mp_time": mp_time, "sp_time": sp_time}
 
     os.makedirs("src/cb/data/results/random", exist_ok=True)

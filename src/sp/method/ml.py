@@ -1,9 +1,5 @@
-from sp.problem_functions.att_functions import *
-from sp.problem_functions.functions_milp import *
-
-import warnings
-warnings.filterwarnings("ignore", category=UserWarning)
-warnings.filterwarnings("ignore", category=RuntimeWarning)
+from src.sp.problem_functions.att_functions import *
+from src.sp.problem_functions.functions_milp import *
 
 from datetime import datetime
 import numpy as np
@@ -12,6 +8,10 @@ import pickle
 import copy
 import time
 import os
+
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 """
 Code for running K-B&B-NodeSelection for solving the shortest path problem
@@ -25,8 +25,9 @@ INPUT:  K = number of second-stage decisions (or subsets)
                      the incumbent solution will be used as final solution
         thresh = threshold that is applied to ML predictions
         num_runs = number of initial runs done
+        sc_pre = scaling method of training data
 OUTPUT: solution to shortest path problem
-        saved in ShortestPath/Data/Results/Decisions
+        saved in src/sp/data/results/ml/
 """
 
 
@@ -148,10 +149,9 @@ def algorithm(K, env, att_series=None, max_level=None, success_model_name=None, 
         if zeta <= 1e-04:
             if print_info:
                 now = datetime.now().time()
-                print("Instance S {}: ROBUST at iteration {} ({}) (time {})   :theta = {},    zeta = {}   Xi{},   "
-                      "prune count = {}".format(
+                print("Instance S {}: ROBUST at iteration {} ({}) (time {})   :obj = {},    violation = {}".format(
                     env.inst_num, tot_nodes, np.round(time.time() - start_time, 3), now, np.round(theta, 4),
-                    np.round(zeta, 4), [len(t) for t in placement.values()], prune_count))
+                    np.round(zeta, 4)))
 
             theta_i = copy.deepcopy(theta)
             inc_thetas_t[time.time() - start_time] = theta_i
@@ -226,12 +226,12 @@ def algorithm(K, env, att_series=None, max_level=None, success_model_name=None, 
     now_nice = f"{now.hour}:{now.minute}:{now.second}"
     print(f"Instance SP {env.inst_num}, completed at {now_nice}, solved in {np.round(runtime/60, 3)} minutes")
 
-    results = {"theta": theta_i, "inc_thetas_t": inc_thetas_t,
-               "inc_thetas_n": inc_thetas_n, "runtime": time.time() - start_time,
+    results = {"obj": theta_i, "inc_obj_time": inc_thetas_t,
+               "inc_obj_nodes": inc_thetas_n, "runtime": time.time() - start_time,
                "tot_nodes": tot_nodes, "mp_time": mp_time, "sp_time": sp_time}
 
-    os.makedirs("sp/data/results/ml", exist_ok=True)
-    with open(f"sp/data/results/ml/final_results_{problem_type}_s{env.inst_num}.pickle", "wb") as handle:
+    os.makedirs("src/sp/data/results/ml", exist_ok=True)
+    with open(f"src/sp/data/results/ml/final_results_{problem_type}_s{env.inst_num}.pickle", "wb") as handle:
         pickle.dump(results, handle)
 
     return results
@@ -283,9 +283,9 @@ def fill_subsets(K, env, att_series, gp_env, progress=False):
             now = datetime.now().time()
             if progress:
                 print(
-                    "Instance SP {}: ROBUST IN FILLING SUBSETS RUN ({}) (time {})   :theta = {},    zeta = {}   Xi{}".format(
+                    "Instance SP {}: ROBUST IN FILLING SUBSETS RUN ({}) (time {})   :obj = {},    violation = {}".format(
                         env.inst_num, np.round(time.time() - start_time, 3), now,
-                        np.round(theta, 4), np.round(zeta, 4), [len(t) for t in tau.values()]))
+                        np.round(theta, 4), np.round(zeta, 4)))
             break
         else:
             new_model = False
@@ -361,9 +361,9 @@ def random_pass(K, env, tau, gp_env, progress=False):
             if progress:
                 now = datetime.now().time()
                 print(
-                    "Instance SPD {}: INIT PASS ROBUST ({}) (time {})   :theta = {},    zeta = {}   Xi{}".format(
+                    "Instance SPD {}: INIT PASS ROBUST ({}) (time {})   :obj = {},    violation = {}".format(
                         env.inst_num, np.round(time.time() - start_time, 3), now,
-                        np.round(theta, 4), np.round(zeta, 4), [len(t) for t in tau.values()]))
+                        np.round(theta, 4), np.round(zeta, 4)))
             break
         else:
             new_model = False

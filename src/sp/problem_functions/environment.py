@@ -2,7 +2,12 @@ import numpy as np
 import math
 import os
 """
-Code for making a 3-D graph on a sphere as a shortest path instance
+Code for making a graph as a shortest path instance
+Graph (class) - shortest path instance
+
+There are two instance alternatives (to set as problem): 
+- sp_normal: a 2-D graph
+- sp_sphere: a 3-D graph on a sphere
 """
 
 

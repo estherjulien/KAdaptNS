@@ -1,14 +1,13 @@
 from joblib import Parallel, delayed
-import numpy as np
-import pickle
 from argparse import ArgumentParser
 
 """
-MAIN file for creating shortest path instances
-INPUT:  num_instances = total number of instances
-        N = instance size
-OUTPUT: a list of environments of Graph (in ShortestPath/ProblemFunctions/Env.py),
-        saved in ShortestPath/Data/Instances
+MAIN file for creating benchmark problem test instances
+INPUT:  problem         - benchmark problem 
+        num_instances   - total number of instances
+        N               - instance size
+OUTPUT: instances for the benchmark problem
+        saved in src/<benchmark>/data/instances/
 """
 
 

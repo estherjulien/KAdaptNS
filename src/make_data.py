@@ -2,19 +2,21 @@ from argparse import ArgumentParser
 import numpy as np
 
 """
-MAIN file for creating training data for the capital budgeting problem
-INPUT:  job_num = number of job (for parallelization purposes)
-        N = instance size
-        K = number of second-stage decisions (or subsets)
-        time_limit = seconds spent per instance
+MAIN file for creating training data for a benchmark problem
+INPUT:  problem         - benchmark problem 
+        job_num         - number of job (for parallelization purposes)
+        N               - instance size
+        K               - number of second-stage decisions (or subsets)
+        time_limit      - minutes spent per instance
+        num_instances   - number of instances for generating data
 OUTPUT: training data
-        data saved in CapitalBudgeting/Data/Results/TrainData 
-        metadata saved in CapitalBudgeting/Data/RunInfo 
+        data saved in src/<benchmark>/data/train_data/inst_results/ 
+        metadata saved in src/<benchmark>/data/train_data/inst_results_md/
 """
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument('--problem', type=str, default='cb')
+    parser.add_argument('--problem', type=str, default='cb', choices=["cb", "sp_sphere"])
     parser.add_argument('--job_num', type=int, default=1)
     parser.add_argument('--N', type=int, default=10)
     parser.add_argument('--K', type=int, default=4)
@@ -30,9 +32,8 @@ if __name__ == "__main__":
     if args.problem == "cb":
         from cb.problem_functions.environment import ProjectsInstance as Env
         from cb.method.data_gen import data_gen_fun_max as data_gen_fun
-
         att_series = ["coords", "obj_det", "x_det", "y_det", "obj_stat", "y_stat", "slack", "const_to_z_dist",
-                      "const_to_const_dist"]  # order changed
+                      "const_to_const_dist"]
     elif "sp" in args.problem:
         from sp.method.data_gen import data_gen_fun
         from sp.problem_functions.environment import Graph as Env

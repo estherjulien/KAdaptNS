@@ -1,9 +1,9 @@
-from sp.problem_functions.functions_milp import *
+from src.sp.problem_functions.functions_milp import *
 import numpy as np
 import copy
 
 """
-Code related to features for the shortest path problem
+Code for feature generation for the shortest path problem
     1. predict_subset()     - predicting the right subset based on the features
     2. state_features()     - make state features for a node
     3. input_fun()          - combine state and scenario attributes to make input features
