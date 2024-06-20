@@ -1,6 +1,6 @@
 import os
 
-from src.cb.problem_functions.functions_milp import *
+from cb.problem_functions.functions_milp import *
 
 from datetime import datetime
 import gurobipy as gp
@@ -57,7 +57,7 @@ def algorithm(K, env, time_limit=30*60, print_info=True, problem_type="test"):
     new_xi_num = 0
 
     print(f"Instance R {env.inst_num}: started at {now}")
-    while N_set and time.time() - start_time < time_limit:
+    while (N_set or k_new is not None) and time.time() - start_time < time_limit:
         # MASTER PROBLEM
         if new_model:
             tot_nodes += 1
@@ -92,6 +92,7 @@ def algorithm(K, env, time_limit=30*60, print_info=True, problem_type="test"):
         zeta, xi = separation_fun(K, x, y, theta, env, tau, gp_env)
         sp_time += time.time() - start_sp
 
+        k_new = None
         # check if robust
         if zeta <= 1e-04:
             if print_info:

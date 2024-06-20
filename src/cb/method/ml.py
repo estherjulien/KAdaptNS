@@ -112,11 +112,11 @@ def algorithm(K, env, att_series=None, max_level=None, success_model_name=None, 
     att_index = att_index_maker(env, att_series)
 
     new_xi_num = len(scen_all) - 1
-    from_trash = False
     # K-branch and bound algorithm
+    k_new = None
     now = datetime.now().time()
     print("Instance S {}: started at {}".format(env.inst_num, now))
-    while (N_set or N_set_trash) and time.time() - start_time < time_limit:
+    while (N_set or N_set_trash or k_new is not None) and time.time() - start_time < time_limit:
         # MASTER PROBLEM
         if new_model:
             tot_nodes += 1

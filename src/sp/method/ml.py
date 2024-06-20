@@ -98,9 +98,10 @@ def algorithm(K, env, att_series=None, max_level=None, success_model_name=None, 
     new_xi_num = len(scen_all) - 1
     from_trash = False
     # K-branch and bound algorithm
+    k_new = None
     now = datetime.now().time()
     print("Instance S {}: started at {}".format(env.inst_num, now))
-    while (N_set or N_set_trash) and time.time() - start_time < time_limit:
+    while (N_set or N_set_trash or k_new is not None) and time.time() - start_time < time_limit:
         # MASTER PROBLEM
         if new_model:
             tot_nodes += 1
@@ -145,6 +146,7 @@ def algorithm(K, env, att_series=None, max_level=None, success_model_name=None, 
         zeta, xi = separation_fun(K, x, y, theta, env, placement, gp_env)
         sp_time += time.time() - start_sp
 
+        k_new = None
         # check if robust
         if zeta <= 1e-04:
             if print_info:

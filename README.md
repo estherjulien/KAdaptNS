@@ -125,17 +125,6 @@ Example:
 python src/run_ml.py --problem cb --inst_num 1 --N 10 --K 4 --K_train 4 --min_train 10 --h_train 2 --max_level 40
 ```
 
-[//]: # (## Ongoing Development)
+## Ongoing Development
 
-[//]: # ()
-[//]: # (This code is being developed on an on-going basis at the author's)
-
-[//]: # ([Github page]&#40;https://github.com/estherjulien/KAdaptNS&#41;.)
-
-[//]: # ()
-[//]: # (## Support)
-
-[//]: # ()
-[//]: # (For support in using this software, submit an)
-
-[//]: # ([issue]&#40;https://github.com/tkralphs/JoCTemplate/issues/new&#41;.)
+This code is being developed on an on-going basis at the author's [Github page](https://github.com/estherjulien/KAdaptNS).

@@ -1,4 +1,4 @@
-from src.cb.problem_functions.environment import *
+from cb.problem_functions.environment import *
 from gurobipy import GRB
 import gurobipy as gp
 import numpy as np
