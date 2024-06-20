@@ -135,6 +135,7 @@ def algorithm(K, env, att_series=None, max_level=None, success_model_name=None, 
             placement[k_new].append(new_xi_num)
             tau = {k: scen_all[placement[k]] for k in np.arange(K)}
 
+        k_new = None
         # prune if theta higher than current robust theta
         if theta - theta_i > -1e-8:
             prune_count += 1
@@ -146,7 +147,6 @@ def algorithm(K, env, att_series=None, max_level=None, success_model_name=None, 
         zeta, xi = separation_fun(K, x, y, theta, env, placement, gp_env)
         sp_time += time.time() - start_sp
 
-        k_new = None
         # check if robust
         if zeta <= 1e-04:
             if print_info:

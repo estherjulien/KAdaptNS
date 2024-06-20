@@ -150,6 +150,7 @@ def algorithm(K, env, att_series=None, max_level=None, success_model_name=None, 
             placement[k_new].append(new_xi_num)
             tau = {k: scen_all[placement[k]] for k in range(K)}
 
+        k_new = None
         # prune if theta higher than current robust theta
         if theta - theta_i > -1e-8:
             prune_count += 1
