@@ -1,5 +1,5 @@
-from src.cb.problem_functions.att_functions import *
-from src.cb.problem_functions.functions_milp import *
+from cb.problem_functions.att_functions import *
+from cb.problem_functions.functions_milp import *
 
 from datetime import datetime
 import gurobipy as gp

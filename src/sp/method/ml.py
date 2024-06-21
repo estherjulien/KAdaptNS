@@ -1,5 +1,5 @@
-from src.sp.problem_functions.att_functions import *
-from src.sp.problem_functions.functions_milp import *
+from sp.problem_functions.att_functions import *
+from sp.problem_functions.functions_milp import *
 
 from datetime import datetime
 import numpy as np

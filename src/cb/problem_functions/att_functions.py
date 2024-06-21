@@ -1,4 +1,4 @@
-from src.cb.problem_functions.functions_milp import *
+from cb.problem_functions.functions_milp import *
 import numpy as np
 import copy
 

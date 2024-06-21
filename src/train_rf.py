@@ -35,6 +35,7 @@ def combine_dataset(args, data_inst_path, data_path, features):
     X = {"dive": [], "alt": [], "no": []}
     y = []
     files = glob.glob(data_inst_path)
+    print(data_inst_path)
     for i in range(num_inst):
         f = files.pop()
         with open(f, "rb") as handle:

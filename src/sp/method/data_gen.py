@@ -1,4 +1,4 @@
-from src.sp.problem_functions.att_functions import *
+from sp.problem_functions.att_functions import *
 
 from joblib import Parallel, delayed
 from datetime import datetime
